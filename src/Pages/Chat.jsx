@@ -10,7 +10,7 @@ function Chat() {
     const fetchUserData = async () => {
       try {
         // Make the API call to fetch username and secret
-        const response = await axios.get('http://localhost:3000/chatui', {
+        const response = await axios.get('https://farmlinkbc.onrender.com/chatui', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // Include token if required
           }
