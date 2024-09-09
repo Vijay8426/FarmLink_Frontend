@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function ViewTender() {
   const [tenders, setTenders] = useState([]);
@@ -90,7 +91,7 @@ function ViewTender() {
                   <img src="https://img.icons8.com/metro/26/000000/link.png" width="17" height="17" id="plus" />
                   <small>{tenders.notice_file.split('/').pop()}</small>
                 </a>
-                <a href="#" className="btn btn-success">View Enrollments</a>
+                <Link to={`/tender/enrollments/${tenders.id}`} className="btn btn-success">View Enrollments</Link>
               </div>
             </div>
           </div>

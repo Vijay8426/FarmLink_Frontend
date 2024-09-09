@@ -11,6 +11,8 @@ import Sigin from './Pages/Sigin';
 import Contract_spec from './Pages/Contract-spec';
 import Enrollments from './Pages/Enrollments';
 import Contractform from './Pages/Contractform';
+import Chat from './Pages/Chat';
+import './App.css'
 
 function App() {
   return (
@@ -26,7 +28,9 @@ function App() {
       <Route path="/sign-in" element={<Sigin/>}></Route>
       <Route path="/contract/:contractId" element={<Contract_spec/>}></Route>
       <Route path="/tender/enrollments/:id" element={<Enrollments/>}></Route>
-      <Route path="/Contractform" element={<Contractform/>}></Route>
+      <Route path="/Contractform/:farmer_id/:tender_id/:buyer_id" element={<Contractform />} />
+
+      <Route path="/chat" element={<Chat/>}></Route>
       </Routes>
 
     </Router>
