@@ -134,11 +134,32 @@ function Navbar() {
                 <li><Link className="dropdown-item" to="/issuetender">Issue Tenders</Link></li>
               </ul>
             </div>}
-
+            {
+              userRole==='2'&&
+            <div className="header_servicesDropdown__84AKF nav-item dropdown">
+              <Link
+                id="servicesDropdown"
+                aria-expanded="false"
+                role="button"
+                className="dropdown-toggle nav-link"
+                tabIndex="0"
+                to="#"
+                data-bs-toggle="dropdown"
+                onClick={ServicesClick}
+                ref={ServicesRef}
+              >
+                Contract
+              </Link>
+              <ul className="dropdown-menu" aria-labelledby="servicesDropdown">
+                <li><Link className="dropdown-item" to="/contracts">View Contracts &nbsp;</Link></li>
+                <li><Link className="dropdown-item" to="/issuetender">Sign Contract</Link></li>
+              </ul>
+            </div>}
+            { userRole==='1'&&
             <Link to="/contracts" className="nav-link" onClick={AboutClick} ref={AboutRef}>
               Contracts
             </Link>
-            
+}
 
             <Link to="/profile" className="nav-link" onClick={ContactClick} ref={ContactRef}>
               Profile

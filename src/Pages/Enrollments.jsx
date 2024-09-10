@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Avatar from 'react-avatar'; // Import react-avatar
 import './Contract.css';
 
 function Enrollments() {
   const { id } = useParams(); // Extract the id from the URL
   const [tenderDetails, setTenderDetails] = useState(null);
   const [drafts, setDrafts] = useState([]);
+  const [userId, setUserId] = useState(null); // Store userId here
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
     if (token) {
+      // Split the token into its parts
+      const payload = token.split('.')[1];
+
+      // Decode the base64 string
+      const decodedPayload = atob(payload);
+
+      // Parse the decoded JSON to get the user_id
+      const payloadObj = JSON.parse(decodedPayload);
+
+      const userId = payloadObj.user_id; // Assuming 'user_id' is in the payload
+      setUserId(userId); // Save userId to state
+      console.log('User ID:', userId);
+
       // Fetch tender details
       axios
         .get(`https://farmlink-ewxs.onrender.com/tender/tenders/${id}`, {
@@ -44,10 +59,10 @@ function Enrollments() {
                 }
               );
               const [personalDetails, farmDetails] = farmerResponse.data;
-              
+
               // Merge farmer's personal and farm details
               const farmer = { ...personalDetails, ...farmDetails };
-              
+
               // Combine the draft with the farmer details
               return { ...draft, farmer };
             })
@@ -62,7 +77,7 @@ function Enrollments() {
       console.error('JWT token not found in local storage');
     }
   }, [id]);
-
+  console.log(drafts)
   if (!tenderDetails || drafts.length === 0) {
     return <div>Loading...</div>;
   }
@@ -88,13 +103,14 @@ function Enrollments() {
                       <p>
                         <a
                           href={`https://farmlink-ewxs.onrender.com/${tenderDetails.notice_file}`}
-                          class="btn-outlined btn-black text-muted d-flex gap-2 p-0 m-0"
+                          className="btn-outlined btn-black text-muted d-flex gap-2 p-0 m-0"
                         >
                           <img
                             src="https://img.icons8.com/metro/26/000000/link.png"
                             width="17"
                             height="17"
                             id="plus"
+                            alt="link"
                           />
                           <small>Attachment</small>
                         </a>
@@ -125,8 +141,6 @@ function Enrollments() {
             </div>
           </div>
         </div>
-
-        {/* Draft and Farmer Information */}
         <div className="row">
           {drafts.map((draft) => (
             <div key={draft.id} className="col-xl-6 col-lg-7 col-md-12">
@@ -135,10 +149,8 @@ function Enrollments() {
                   <div className="row">
                     <div className="col-lg-4 col-md-4 col-12">
                       <div className="profile-image float-md-right">
-                        <img
-                          src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                          alt="Farmer"
-                        />
+                        {/* Avatar based on farmer's name */}
+                        <Avatar name={draft.farmer.name} size="100" round={true} />
                       </div>
                     </div>
                     <div className="col-lg-8 col-md-8 col-12">
@@ -150,20 +162,21 @@ function Enrollments() {
                       <p>Farm Size: {draft.farmer.farm_size} acres</p>
                       <a
                         href={`https://farmlink-ewxs.onrender.com${draft.draftfile}`}
-                        class="btn-outlined btn-black text-muted d-flex gap-2 py-3"
+                        className="btn-outlined btn-black text-muted d-flex gap-2 py-3"
                       >
                         <img
                           src="https://img.icons8.com/metro/26/000000/link.png"
                           width="17"
                           height="17"
                           id="plus"
+                          alt="link"
                         />
-                        <small>${draft.draftfile}</small>
+                        <small>{draft.draftfile}</small>
                       </a>
                       <div className="d-flex gap-3">
-                        <button className="btn btn-primary btn-round">
+                        <Link  to={`/Contractform/${draft.farmer.id}/${id}/${userId}`}  className="btn btn-primary btn-round">
                           Sign Contract
-                        </button>
+                        </Link>
                         <button className="btn btn-primary btn-round btn-simple">
                           Message Farmer
                         </button>

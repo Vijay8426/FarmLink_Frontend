@@ -27,6 +27,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/sign-up" element={<Sign_up/>}></Route>
       <Route path="/sign-in" element={<Sigin/>}></Route>
+      <Route path="/chat" element={<Chat/>}></Route>
       <Route path="/contract/:contractId" element={<Contract_spec/>}></Route>
       <Route path="/tender/enrollments/:id" element={<Enrollments/>}></Route>
       <Route path="/Contractform/:farmer_id/:tender_id/:buyer_id" element={<Contractform />} />
