@@ -117,7 +117,7 @@ Fostering Innovation and Trust in Agriculture.
                       ref={semiac}
                       onClick={getsemi}
                     >
-                      Semiconductor services
+                      Secure Contracts
                     </Link>
                   </div>
                   <div className="nav-item">
@@ -132,7 +132,9 @@ Fostering Innovation and Trust in Agriculture.
                       onClick={getsys}
                       ref={sysac}
                     >
-                      System solutions
+                      
+Price Negotiation
+
                     </Link>
                   </div>
                   <div className="nav-item">
@@ -147,7 +149,8 @@ Fostering Innovation and Trust in Agriculture.
                       onClick={gettech}
                       ref={techac}
                     >
-                      Technology services
+                     Timely Payments
+
                     </Link>
                   </div>
                 </div>

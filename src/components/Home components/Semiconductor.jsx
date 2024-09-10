@@ -27,10 +27,10 @@ function Semiconductor() {
                       </div>
                       <div className="col-lg-6">
                         <p>
-                          By leveraging our semiconductor services, companies can access specialized expertise,
-                          state-of-the-art manufacturing capabilities, and comprehensive support to accelerate product
-                          development, improve quality, reduce costs, and bring innovative semiconductor solutions to
-                          market more efficiently.
+                        Secure contracts are digital agreements that are legally binding and protected against tampering. They detail all terms, including quantity, quality, delivery schedules, and prices. By using encryption and blockchain technology, these contracts ensure transparency and trust between farmers and buyers. This prevents fraud and ensures that both parties adhere to the agreed terms.
+
+
+
                         </p>
                         <div className="buttonContainer">
                           <Link role="button" tabIndex="0" to='/semiconductor' className="button btn btn-primary">

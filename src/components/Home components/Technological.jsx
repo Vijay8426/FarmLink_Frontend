@@ -27,9 +27,8 @@ function Technological() {
                       </div>
                       <div className="col-lg-6">
                         <p>
-                          SenaniTech’s technology services are tightly integrated with its prototyping validation services.
-                          Through its integrated environment, SenaniTech’s customers will be able to realize a one-stop
-                          solution for their engineering & manufacturing requirements.
+                        Timely payments ensure farmers receive their money promptly after delivering their produce. The system automates payment processes based on contract fulfillment, reducing delays and administrative burden. This feature provides financial stability and predictability for farmers. It builds trust and encourages ongoing participation in the contract farming system.
+
                         </p>
                         <div className="buttonContainer">
                           <Link role="button" tabIndex="0" to="/technological-services" className="button btn btn-primary">

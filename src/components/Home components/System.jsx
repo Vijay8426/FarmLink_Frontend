@@ -26,10 +26,9 @@ function System() {
                       </div>
                       <div className="col-lg-6">
                         <p>
-                          SenaniTech collaborates closely with its clients to provide comprehensive coverage of the entire
-                          product development lifecycle. By merging cutting-edge technology, engineering excellence,
-                          structured processes, and extensive domain knowledge, SenaniTech is committed to delivering
-                          innovative and transformative products.
+                        Price negotiation allows farmers and buyers to discuss and agree on fair prices before finalizing contracts. The platform provides tools and market data to facilitate transparent discussions. This ensures that pricing reflects current market conditions and benefits both parties. Fair negotiation promotes equitable transactions and strengthens relationships in the supply chain.
+
+
                         </p>
                         <div className="buttonContainer">
                           <Link role="button" tabIndex="0" to='/system-soln' className="button btn btn-primary">

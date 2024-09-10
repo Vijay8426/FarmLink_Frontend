@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 function Contracts() {
   const [contracts, setContracts] = useState([]);
 
@@ -93,7 +93,7 @@ function Contracts() {
       {contracts.length > 0 ? (
         contracts.map(contract => (
           <div key={contract.id} className="card mb-3">
-            <h5 className="card-header">{contract.title}</h5>
+            <Link to={`/contract/7`} className="card-header h5">{contract.title}</Link>
             <div className="card-body">
               <div className='d-flex px-5 py-3' style={{ gap: '50%' }}>
                 <span className="card-title h5">Opening: {new Date(contract.start_date).toLocaleDateString()}</span>
