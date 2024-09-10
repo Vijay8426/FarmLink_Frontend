@@ -8,39 +8,57 @@ function Sigin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // First API call to login
       const response = await fetch('https://farmlink-ewxs.onrender.com/user/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-           "email":email,
-           "password":password
+          email: email,
+          password: password,
         }),
       });
 
- 
-      
-    if (!response.ok) {
+      if (!response.ok) {
         throw new Error('Login failed');
       }
-  
+
       const data = await response.json();
-      console.log('Response Data:', data);  // Log the response to check the format
-  
-      // Extract the access and refresh tokens from the "token" object
+      console.log('Login Response Data:', data);  // Log the response to check the format
+
+      // Extract access and refresh tokens
       const { access, refresh } = data.token;
-  
+
       // Store tokens in local storage
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
 
+      // Second API call to fetch role using the access token
+      const roleResponse = await fetch('http://localhost:5000/role', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${access}`, // Use access token
+        },
+      });
+
+      if (!roleResponse.ok) {
+        throw new Error('Failed to fetch role');
+      }
+
+      const roleData = await roleResponse.json();
+      console.log('Role Data:', roleData);
+
+      // Store the role in local storage
+      const { role } = roleData;
+      localStorage.setItem('userRole', role);
+
     } catch (error) {
-      console.error('Login failed', error);
+      console.error('Error:', error);
     }
   };
 
- 
   return (
     <div>
       <section className="vh-100 py-5">

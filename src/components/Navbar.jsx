@@ -7,20 +7,18 @@ import logo from '../../images/farmlinkicon.png';
 function Navbar() {
   const [bgColor, setBgColor] = useState('transparent'); // Default background color
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track if user is logged in
+  const [userRole, setUserRole] = useState(''); // State to track user role
 
-  // Check if accessToken exists in localStorage on component mount
+  // Check if accessToken exists and fetch user role from localStorage on component mount
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    var count=0;
+    const role = localStorage.getItem('userRole'); // Fetch user role from localStorage
     if (token) {
       setIsLoggedIn(true); // Set user as logged in if token exists
-      
-    }
-    else if (token&&count===0) {
-      setIsLoggedIn(true); // Set user as logged in if token exists
-      window.location.reload(); // Reload the page if token is found
-    } 
-    else {
+      if (role) {
+        setUserRole(role); // Set user role if it exists in localStorage
+      }
+    } else {
       setIsLoggedIn(false); // Set user as not logged in if token is not found
     }
   }, []); // Empty dependency array ensures this runs once on component mount
@@ -70,6 +68,7 @@ function Navbar() {
   // Function to handle sign out
   const handleSignOut = () => {
     localStorage.removeItem('accessToken'); // Clear the access token from localStorage
+    localStorage.removeItem('userRole'); // Clear the user role from localStorage
     setIsLoggedIn(false); // Update state to reflect logged out status
     window.location.reload(); // Refresh the page
   };
@@ -114,7 +113,8 @@ function Navbar() {
             <Link to="/" className="nav-link header_navButton__zcho_" onClick={HomeClick} ref={HomeRef}>
               Home
             </Link>
-
+            {
+              userRole==='2'&&
             <div className="header_servicesDropdown__84AKF nav-item dropdown">
               <Link
                 id="servicesDropdown"
@@ -133,23 +133,32 @@ function Navbar() {
                 <li><Link className="dropdown-item" to="/viewtenders">View Tenders &nbsp;</Link></li>
                 <li><Link className="dropdown-item" to="/issuetender">Issue Tenders</Link></li>
               </ul>
-            </div>
+            </div>}
 
             <Link to="/contracts" className="nav-link" onClick={AboutClick} ref={AboutRef}>
               Contracts
             </Link>
+            
+
             <Link to="/profile" className="nav-link" onClick={ContactClick} ref={ContactRef}>
               Profile
             </Link>
             <Link to="/chat" className="nav-link" onClick={AboutClick} >
-              Contracts
+              Chat
             </Link>
-
+            {userRole==='1'&&
+            <Link to="/tender-farmer" className="nav-link" onClick={AboutClick} >
+              Tenders
+            </Link>
+}
             {/* Conditionally render Sign in or Sign out */}
             {isLoggedIn ? (
-              <a href="/" className="nav-link" onClick={handleSignOut}>
-                Sign out
-              </a>
+              <>
+                
+                <a href="/" className="nav-link" onClick={handleSignOut}>
+                  Sign out
+                </a>
+              </>
             ) : (
               <Link to="/sign-in" className="nav-link">
                 Sign in

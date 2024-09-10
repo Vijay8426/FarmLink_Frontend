@@ -12,6 +12,7 @@ import Contract_spec from './Pages/Contract-spec';
 import Enrollments from './Pages/Enrollments';
 import Contractform from './Pages/Contractform';
 import Chat from './Pages/Chat';
+import Tender_farmer from './Pages/Tender_farmer';
 import './App.css'
 
 function App() {
@@ -29,10 +30,8 @@ function App() {
       <Route path="/contract/:contractId" element={<Contract_spec/>}></Route>
       <Route path="/tender/enrollments/:id" element={<Enrollments/>}></Route>
       <Route path="/Contractform/:farmer_id/:tender_id/:buyer_id" element={<Contractform />} />
-
-      <Route path="/chat" element={<Chat/>}></Route>
+      <Route path="/tender-farmer" element={<Tender_farmer/>}></Route>
       </Routes>
-
     </Router>
   );
 }
