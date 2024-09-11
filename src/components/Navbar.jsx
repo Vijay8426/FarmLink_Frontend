@@ -153,6 +153,7 @@ function Navbar() {
               <ul className="dropdown-menu" aria-labelledby="servicesDropdown">
                 <li><Link className="dropdown-item" to="/contracts">View Contracts &nbsp;</Link></li>
                 <li><Link className="dropdown-item" to="/issuetender">Sign Contract</Link></li>
+                <li><Link className="dropdown-item" to="/contract-res">Contract Requests</Link></li>
               </ul>
             </div>}
             {
@@ -174,6 +175,7 @@ function Navbar() {
               <ul className="dropdown-menu" aria-labelledby="servicesDropdown">
                 <li><Link className="dropdown-item" to="/contracts">View Contracts &nbsp;</Link></li>
                 <li><Link className="dropdown-item" to="/contract-req">Contract Requests</Link></li>
+                
               </ul>
             </div>}
 

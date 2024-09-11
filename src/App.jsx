@@ -15,6 +15,7 @@ import Chat from './Pages/Chat';
 import Contract_req from './Pages/Contract_req';
 import Tender_farmer from './Pages/Tender_farmer';
 import Contract_res from './Pages/Contract_res';
+import DeployContract from './Pages/DeployContract';
 import './App.css'
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       <Route path="/tender-farmer" element={<Tender_farmer/>}></Route>
       <Route path="/contract-req" element={<Contract_req/>}></Route>
       <Route path="/contract-res" element={<Contract_res/>}></Route>
+      <Route path="/payment/sucess/:id/" element={<DeployContract/>}></Route>
       </Routes>
     </Router>
   );

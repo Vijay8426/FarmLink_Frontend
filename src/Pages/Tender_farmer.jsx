@@ -1,73 +1,101 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 function Tender_farmer() {
   const [tenders, setTenders] = useState([]);
-  const [error, setError] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [base64File, setBase64File] = useState('');
 
+  // Fetch JWT token from localStorage
+  const accessToken = localStorage.getItem('accessToken');
+
+  // Fetch tender data on component mount
   useEffect(() => {
-    const fetchTenderData = async () => {
+    const fetchTenders = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        
-        if (!token) {
-          setError('No token found in localStorage');
-          return;
-        }
-
-        console.log('Fetching tender data...');
-
-        const response = await axios.get('https://farmlink-ewxs.onrender.com/tender/tender/buyer/', {
+        const response = await axios.get('https://farmlink-ewxs.onrender.com/tender/tenders', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`, // Attach JWT token in Authorization header
           },
         });
-
-        console.log('Response:', response);
-        console.log(response.data)
-        // Access the data array from response.data
-        setTenders(response.data || []); // Ensure tenders is an array
-      } catch (err) {
-        console.error('Error fetching tender data:', err);
-        setError('Failed to fetch tender data');
+        setTenders(response.data);
+      } catch (error) {
+        console.error('Error fetching tender data', error);
       }
     };
+    fetchTenders();
+  }, [accessToken]);
 
-    fetchTenderData();
-  }, []);
+  // Convert file to Base64
+  const convertFileToBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setBase64File(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.error('Error converting file to Base64', error);
+    };
+  };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // Handle file selection
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    convertFileToBase64(file);
+  };
 
-  if (!tenders.length) {
-    return <div>Loading...</div>;
-  }
+  // Handle Enroll (file upload + second API call with application/json)
+  const handleEnroll = async (tenderId) => {
+    if (!selectedFile || !base64File) {
+      alert('Please select a file before enrolling.');
+      return;
+    }
+
+    const data = {
+      tenderId,
+      file: base64File, // Send file as Base64 encoded
+      fileName: selectedFile.name,
+      fileType: selectedFile.type,
+    };
+
+    try {
+      const response = await axios.post(`https://farmlink-ewxs.onrender.com/draft/drafts/${tenderId}/`, data, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Attach JWT token in Authorization header
+          'Content-Type': 'application/json', // Use application/json content type
+        },
+      });
+      console.log('File uploaded successfully', response.data);
+      alert('Enrolled successfully');
+    } catch (error) {
+      console.error('Error uploading file', error);
+      alert('Error during enrollment');
+    }
+  };
 
   return (
     <div className="container" style={{ paddingTop: '7%' }}>
-      {tenders.map((tenders) => (
-        <div key={tenders.id} className="card mt-5 border-5 pt-2 active pb-0 px-3">
+      {tenders.map((tender) => (
+        <div key={tender.id} className="card mt-5 border-5 pt-2 active pb-0 px-3">
           <div className="card-body">
             <div className="row d-flex flex-col gap-4">
               <div className="col-12">
-                <h4 className="card-title"><b>{tenders.title}</b></h4>
+                <h4 className="card-title"><b>{tender.title}</b></h4>
               </div>
               <div className="row d-flex align-items-center gap-4">
                 <div>
                   <h6 className="card-subtitle mb-2 text-muted">
                     <p className="card-text text-muted h6">
-                      <img src="https://img.icons8.com/color/26/000000/christmas-star.png" className="mr-1" width="19" height="19" id="star" />
-                      <span className="vl mr-2 ml-0"></span>
+                      <img src="https://img.icons8.com/color/26/000000/christmas-star.png" alt="Star" width="19" height="19" />
                       <i className="fa fa-users text-muted"></i> Public
-                      <span className="vl ml-1 mr-2"></span> Updated by <span className="font-weight-bold">Company Name</span> on {new Date(tenders.open_time).toLocaleDateString()}
+                      Updated by <span className="font-weight-bold">Company Name</span> on {new Date(tender.open_time).toLocaleDateString()}
                     </p>
                   </h6>
                 </div>
                 <div>
-                  <h5>Tenders Description</h5>
-                  <p>{tenders.description ? tenders.description : 'No description available'}</p>
+                  <h5>Tender Description</h5>
+                  <p>{tender.description || 'No description available.'}</p>
                 </div>
               </div>
             </div>
@@ -78,22 +106,21 @@ function Tender_farmer() {
                 <div className="col">
                   <h6 className="card-subtitle mb-2 text-muted">
                     <div className="card-text text-muted small d-flex align-items-center gap-2">
-                      <img src="https://img.icons8.com/metro/26/000000/star.png" className="mr-1" width="19" height="19" id="star" />Closing time: {new Date(tenders.close_time).toLocaleDateString()}
+                      <img src="https://img.icons8.com/metro/26/000000/star.png" alt="Star" width="19" height="19" />
+                      Closing time: {new Date(tender.close_time).toLocaleString()}
                     </div>
                   </h6>
                 </div>
-                <a 
-                  href={`https://farmlink-ewxs.onrender.com${tenders.notice_file}`} 
-                  className="btn-outlined btn-black text-muted d-flex gap-2"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <img src="https://img.icons8.com/metro/26/000000/link.png" width="17" height="17" id="plus" />
-                  <small>{tenders.notice_file.split('/').pop()}</small>
+
+                <a href={tender.notice_file} className="btn-outlined btn-black text-muted d-flex gap-2">
+                  <img src="https://img.icons8.com/metro/26/000000/link.png" alt="Link" width="17" height="17" />
+                  <small>TENDER ATTACHMENTS</small>
                 </a>
-                <label for="formFileSm" class="form-label">Upload Draft</label>
-                        <input class="" id="formFileSm" type="file" required/>
-                <Link to={`/tender/enrollments/${tenders.id}`} className="btn btn-success">Enroll</Link>
+
+                <label htmlFor={`formFile_${tender.id}`} className="form-label">Upload Draft</label>
+                <input id={`formFile_${tender.id}`} type="file" onChange={handleFileChange} required />
+
+                <button onClick={() => handleEnroll(tender.id)} className="btn btn-success">Enroll</button>
               </div>
             </div>
           </div>
