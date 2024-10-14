@@ -167,8 +167,8 @@ function Navbar() {
                 tabIndex="0"
                 to="#"
                 data-bs-toggle="dropdown"
-                onClick={ServicesClick}
-                ref={ServicesRef}
+                
+               
               >
                 Contract
               </Link>

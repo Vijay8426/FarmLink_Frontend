@@ -4,7 +4,6 @@ import axios from 'axios';
 function Tender_farmer() {
   const [tenders, setTenders] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [base64File, setBase64File] = useState('');
 
   // Fetch JWT token from localStorage
   const accessToken = localStorage.getItem('accessToken');
@@ -26,51 +25,35 @@ function Tender_farmer() {
     fetchTenders();
   }, [accessToken]);
 
-  // Convert file to Base64
-  const convertFileToBase64 = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setBase64File(reader.result);
-    };
-    reader.onerror = (error) => {
-      console.error('Error converting file to Base64', error);
-    };
-  };
-
   // Handle file selection
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-    convertFileToBase64(file);
   };
 
-  // Handle Enroll (file upload + second API call with application/json)
+  // Handle Enroll (file upload + second API call using multipart/form-data)
   const handleEnroll = async (tenderId) => {
-    if (!selectedFile || !base64File) {
-      alert('Please select a file before enrolling.');
+    if (!selectedFile) {
+      console.error('Please select a file before enrolling.');
       return;
     }
 
-    const data = {
-      tenderId,
-      file: base64File, // Send file as Base64 encoded
-      fileName: selectedFile.name,
-      fileType: selectedFile.type,
-    };
+    // Create a new FormData object
+    const formData = new FormData();
+    formData.append('draftfile', selectedFile); // Append the selected file
+    // Append the tenderId
 
     try {
-      const response = await axios.post(`https://farmlink-ewxs.onrender.com/draft/drafts/${tenderId}/`, data, {
+      const response = await axios.post(`https://farmlink-ewxs.onrender.com/draft/drafts/${tenderId}/`, formData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`, // Attach JWT token in Authorization header
-          'Content-Type': 'application/json', // Use application/json content type
+          'Authorization': `Bearer ${accessToken}`, // Attach JWT token in Authorization header // Ensure multipart form-data
         },
       });
       console.log('File uploaded successfully', response.data);
-      alert('Enrolled successfully');
+      // You can add a UI message here for success if needed
     } catch (error) {
       console.error('Error uploading file', error);
-      alert('Error during enrollment');
+      // No alert or error popup will be shown, just logging the error
     }
   };
 

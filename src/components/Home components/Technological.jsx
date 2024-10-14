@@ -22,6 +22,7 @@ function Technological() {
                           data-nimg="1"
                           className="page_serviceImage__97B3_ undefined"
                           style={{ color: 'transparent' }}
+                          src='./images/pay.jpg'
                        
                         />
                       </div>

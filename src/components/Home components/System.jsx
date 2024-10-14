@@ -21,7 +21,7 @@ function System() {
                           decoding="async"
                           data-nimg="1"
                           className="page_serviceImage__97B3_ undefined"
-                          src="./images/price negotiation.png"
+                          src="./images/price.jpg"
                         />
                       </div>
                       <div className="col-lg-6">
